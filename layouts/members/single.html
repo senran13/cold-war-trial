@@ -1,0 +1,27 @@
+{{ define "main" }}
+{{ $id := .File.ContentBaseName }}
+{{ $mine := slice }}
+{{ range partial "tsv.html" "publications" }}
+  {{ if in (split (index . "成員id") ";") $id }}{{ $mine = $mine | append . }}{{ end }}
+{{ end }}
+<article class="page">
+  <p class="back"><a href="{{ .Parent.RelPermalink }}">‹ 成員介紹</a></p>
+  <h1>{{ .Title }}</h1>
+  <p class="byline">{{ .Params.position }}</p>
+  {{ with .Params.fields }}<p>研究領域：{{ delimit . "、" }}</p>{{ end }}
+  {{ with .Params.orcid }}<p>ORCID：<a href="https://orcid.org/{{ . }}">{{ . }}</a></p>{{ end }}
+
+  <h2>出版</h2>
+  {{ with $mine }}
+    <ul class="biblio">
+    {{ range sort . "年份" "desc" }}<li>{{ index . "作者" }}，{{ index . "標題" }}，{{ index . "出處" }}，{{ index . "年份" }}。</li>{{ end }}
+    </ul>
+  {{ else }}<p class="placeholder">（待成員提供）</p>{{ end }}
+
+  <h2>課綱</h2>
+  {{ with .Params.syllabi }}{{ . | markdownify }}{{ else }}<p class="placeholder">（待成員提供）</p>{{ end }}
+
+  <h2>研究計畫</h2>
+  {{ with .Params.projects }}{{ . | markdownify }}{{ else }}<p class="placeholder">（待成員提供）</p>{{ end }}
+</article>
+{{ end }}

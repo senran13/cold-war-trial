@@ -1,0 +1,32 @@
+{{ define "main" }}
+{{ if .Parent.IsHome }}
+  {{/* 入口頁 /review/ */}}
+  {{ $cur := .GetPage (printf "/review/%v" .Params.currentVersion) }}
+  <article class="page reading">
+    <p class="kicker">測試文章</p>
+    <h1>{{ .Params.fullTitle }}</h1>
+    <p class="byline">{{ delimit .Params.authors "、" }}　│　{{ .Params.currentVersion }} 年版</p>
+    {{ .Content }}
+    <h2>章節</h2>
+    <ol class="chapters">
+      {{ range $cur.Pages.ByWeight }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}
+    </ol>
+    <h2>引用本文</h2>
+    <p class="placeholder">（測試：引用方式）</p>
+    <h2>版本沿革</h2>
+    <ul class="plain">
+      {{ range .Sections.ByTitle.Reverse }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a>　{{ .Params.note }}</li>{{ end }}
+    </ul>
+  </article>
+{{ else }}
+  {{/* 版本頁 /review/2026/ */}}
+  <article class="page reading">
+    <p class="back"><a href="{{ .Parent.RelPermalink }}">‹ 測試文章</a></p>
+    <h1>{{ .Title }}</h1>
+    {{ .Content }}
+    <ol class="chapters">
+      {{ range .Pages.ByWeight }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}
+    </ol>
+  </article>
+{{ end }}
+{{ end }}

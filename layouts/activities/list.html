@@ -1,0 +1,12 @@
+{{ define "main" }}
+{{ $rows := where (partial "tsv.html" "activities") "類型" "listing" }}
+<article class="page">
+  <h1>{{ .Title }}</h1>
+  {{ .Content }}
+  {{ with $rows }}
+  <ul class="plain">
+    {{ range sort . "日期" "desc" }}<li><b>{{ index . "日期" }}</b>　{{ index . "標題" }}　<span class="byline">{{ index . "主講" }}</span></li>{{ end }}
+  </ul>
+  {{ else }}<p class="placeholder">（尚無資料：活動紀錄建檔於 assets/data/activities.tsv）</p>{{ end }}
+</article>
+{{ end }}

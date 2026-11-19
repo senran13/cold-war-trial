@@ -1,0 +1,11 @@
+{{ define "main" }}
+<article class="page">
+  <h1>{{ .Title }}</h1>
+  {{ .Content }}
+  <ul class="cards">
+    {{ range sort .Pages "File.ContentBaseName" }}
+    <li><a href="{{ .RelPermalink }}"><b>{{ .Title }}</b><span>{{ .Params.position }}</span></a></li>
+    {{ end }}
+  </ul>
+</article>
+{{ end }}

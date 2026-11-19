@@ -1,0 +1,12 @@
+{{ define "main" }}
+{{ $rows := partial "tsv.html" "publications" }}
+<article class="page">
+  <h1>{{ .Title }}</h1>
+  {{ .Content }}
+  {{ with $rows }}
+  <ul class="biblio">
+    {{ range sort . "年份" "desc" }}<li>{{ index . "作者" }}，{{ index . "標題" }}，{{ index . "出處" }}，{{ index . "年份" }}。</li>{{ end }}
+  </ul>
+  {{ else }}<p class="placeholder">（尚無資料：出版成果建檔於 assets/data/publications.tsv）</p>{{ end }}
+</article>
+{{ end }}

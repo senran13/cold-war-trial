@@ -1,0 +1,21 @@
+{{- /* 讀 assets/data/<名稱>.tsv，回傳以第一列為欄名的 map 清單；檔案不存在或只有欄名時回傳空清單。
+       Hugo 的 transform.Unmarshal 不支援 TSV，故直接按行、按 tab 切開；本站 TSV 規定欄位內不得含 tab 與換行。 */ -}}
+{{- $out := slice -}}
+{{- with resources.Get (printf "data/%s.tsv" .) -}}
+  {{- $lines := split (trim (replace .Content "\r" "") "\n") "\n" -}}
+  {{- if gt (len $lines) 1 -}}
+    {{- $head := split (index $lines 0) "\t" -}}
+    {{- range after 1 $lines -}}
+      {{- if . -}}
+        {{- $row := split . "\t" -}}
+        {{- $m := dict -}}
+        {{- range $i, $k := $head -}}
+          {{- $v := "" -}}{{- if lt $i (len $row) -}}{{- $v = index $row $i -}}{{- end -}}
+          {{- $m = merge $m (dict $k $v) -}}
+        {{- end -}}
+        {{- $out = $out | append $m -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $out -}}

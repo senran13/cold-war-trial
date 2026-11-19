@@ -1,0 +1,15 @@
+<header class="banner">
+  <img src="{{ "images/banner.jpg" | relURL }}" alt="">
+  <div class="banner-text">
+    <a class="site-name" href="{{ "/" | relURL }}">{{ site.Title }}{{ if site.Params.nameIsProvisional }}<small>網站名稱待定</small>{{ end }}</a>
+    <span class="site-name-en">{{ site.Params.titleEn }}</span>
+  </div>
+</header>
+<nav class="mainnav" aria-label="主選單">
+  <ul>
+  {{ $current := . }}
+  {{ range site.Menus.main }}
+    <li><a href="{{ .URL }}"{{ if or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) }} aria-current="page"{{ end }}>{{ .Name }}</a></li>
+  {{ end }}
+  </ul>
+</nav>

@@ -1,0 +1,53 @@
+{{ define "main" }}
+{{ $review := site.GetPage "/review" }}
+{{ $pubs := partial "tsv.html" "publications" }}
+{{ $acts := where (partial "tsv.html" "activities") "類型" "listing" }}
+<section class="carousel" aria-roledescription="輪播" aria-label="首頁輪播">
+  <div class="slide">
+    <p class="kicker">測試文章</p>
+    <h1>{{ $review.Params.fullTitle }}</h1>
+    <p class="byline">{{ delimit $review.Params.authors "、" }}　│　{{ $review.Params.currentVersion }} 年版</p>
+    <p class="summary">{{ $review.Params.abstractShort }}</p>
+    <p class="actions">
+      <a class="btn" href="{{ $review.RelPermalink }}">線上閱讀</a>
+      <span class="btn ghost" aria-disabled="true">下載 PDF（測試）</span>
+    </p>
+  </div>
+  <div class="slide" hidden>
+    <p class="kicker">最新出版</p>
+    {{ with last 1 (sort $pubs "年份") }}{{ range . }}
+      <h2>{{ index . "標題" }}</h2>
+      <p class="byline">{{ index . "作者" }}　│　{{ index . "年份" }}　│　{{ index . "出處" }}</p>
+    {{ end }}{{ else }}
+      <h2>（尚無資料）</h2>
+      <p class="summary">出版成果建檔後，這裡會自動顯示最新一筆。</p>
+    {{ end }}
+    <p class="actions"><a class="btn" href="{{ "/publications/" | relURL }}">看全部出版成果</a></p>
+  </div>
+  <div class="slide" hidden>
+    <p class="kicker">最新活動</p>
+    {{ with last 1 (sort $acts "日期") }}{{ range . }}
+      <h2>{{ index . "標題" }}</h2>
+      <p class="byline">{{ index . "日期" }}　│　{{ index . "主講" }}</p>
+    {{ end }}{{ else }}
+      <h2>（尚無資料）</h2>
+      <p class="summary">活動紀錄建檔後，這裡會自動顯示最新一筆。</p>
+    {{ end }}
+    <p class="actions"><a class="btn" href="{{ "/activities/" | relURL }}">看全部活動紀錄</a></p>
+  </div>
+  <div class="carousel-ctl">
+    <button type="button" data-dir="-1" aria-label="上一則">‹</button>
+    <button type="button" data-dir="1" aria-label="下一則">›</button>
+  </div>
+</section>
+<script>
+(function(){
+  var s=document.querySelectorAll('.carousel .slide'),i=0;
+  document.querySelectorAll('.carousel-ctl button').forEach(function(b){
+    b.addEventListener('click',function(){
+      s[i].hidden=true; i=(i+Number(b.dataset.dir)+s.length)%s.length; s[i].hidden=false;
+    });
+  });
+})();
+</script>
+{{ end }}

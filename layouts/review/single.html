@@ -1,0 +1,24 @@
+{{ define "head" }}<link rel="canonical" href="{{ (site.GetPage "/review").Permalink }}">{{ end }}
+{{ define "bodyclass" }}reading-page{{ end }}
+{{ define "main" }}
+{{ $version := .Parent }}
+{{ $review := $version.Parent }}
+<div class="two-col">
+  <nav class="toc" aria-label="章節目錄">
+    <p class="toc-head"><a href="{{ $review.RelPermalink }}">{{ $review.Params.fullTitle }}</a><br><small>{{ $version.Title }}</small></p>
+    <ol>
+      {{ $cur := . }}
+      {{ range $version.Pages.ByWeight }}
+      <li><a href="{{ .RelPermalink }}"{{ if eq . $cur }} aria-current="page"{{ end }}>{{ .Title }}</a></li>
+      {{ end }}
+    </ol>
+  </nav>
+  <article class="page reading">
+    <h1>{{ .Title }}</h1>
+    {{ .Content }}
+    <h2 class="refs-head">本章徵引文獻</h2>
+    <p class="placeholder">（測試：徵引文獻）</p>
+    <p class="notice">© {{ $version.Params.year }} {{ delimit $review.Params.authors "、" }}。（測試著作權聲明）</p>
+  </article>
+</div>
+{{ end }}
