@@ -1,0 +1,62 @@
+/* 方案 B「卷宗」：檔案館意象。導覽做成卷宗頁籤、內容是夾在檔案夾裡的紙頁，日期與書目資訊用打字機等寬字 */
+:root{--deep:#41444b;--slate:#495464;--bone:#dfd8c8;--sand:#cabfab;--paper:#fbf8f1;--ink:#2b2e33;--ink2:#5d5850;--rule:#d9d2c4;
+--serif:"Noto Serif TC","Songti TC",serif;--sans:"Noto Sans TC","PingFang TC",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,"Courier New",monospace}
+*{box-sizing:border-box}
+html{background:var(--deep)}
+body{margin:0;font-family:var(--sans);font-size:16px;line-height:1.85;color:var(--ink);background:var(--bone)}
+a{color:var(--slate)}
+img{max-width:100%}
+.banner{position:relative;background:var(--deep)}
+.banner img{display:block;width:100%;height:clamp(120px,18vw,200px);object-fit:cover;object-position:center 42%;filter:grayscale(1) sepia(.25)}
+.banner::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(28,31,36,.85),rgba(28,31,36,.2))}
+.banner-text{position:absolute;left:0;right:0;bottom:0;z-index:1;max-width:1080px;margin:0 auto;padding:0 20px 20px;display:flex;flex-direction:column}
+.site-name{font-family:var(--serif);font-size:clamp(20px,3.6vw,32px);font-weight:700;letter-spacing:.06em;color:var(--paper);text-decoration:none}
+.site-name small{font-family:var(--mono);font-size:11px;font-weight:400;color:#c9584a;border:1.5px solid #c9584a;padding:1px 6px;margin-left:12px;vertical-align:5px;transform:rotate(-3deg);display:inline-block}
+.site-name-en{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--sand)}
+.mainnav{background:var(--deep);padding-top:10px}
+.mainnav ul{list-style:none;margin:0 auto;max-width:1080px;padding:0 20px;display:flex;flex-wrap:wrap;gap:4px}
+.mainnav a{display:block;padding:8px 16px 7px;background:var(--sand);color:var(--ink);text-decoration:none;font-size:14px;border-radius:6px 6px 0 0}
+.mainnav a:hover{background:#d8cfbf}
+.mainnav a[aria-current]{background:var(--bone);font-weight:700}
+.mainnav a:focus-visible,.btn:focus-visible{outline:2px solid var(--slate);outline-offset:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:32px 20px 64px}
+.page{background:var(--paper);border:1px solid var(--sand);box-shadow:4px 4px 0 var(--sand);padding:32px 36px}
+.page h1{font-family:var(--serif);font-size:clamp(22px,3.4vw,30px);line-height:1.4;margin:0 0 12px}
+.page h2{font-family:var(--serif);font-size:19px;margin:32px 0 10px;padding-bottom:4px;border-bottom:3px double var(--sand)}
+.kicker{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--paper);background:var(--slate);padding:2px 10px;margin:0 0 6px}
+.byline{font-family:var(--mono);color:var(--ink2);font-size:13px;margin:0 0 12px}
+.placeholder{font-family:var(--mono);font-size:14px;color:#8a7f70}
+.back{font-family:var(--mono);font-size:13px;margin:0 0 8px}
+.plain{list-style:none;padding:0}
+.plain li{padding:6px 0;border-bottom:1px dashed var(--sand)}
+.biblio li{margin-bottom:6px}
+.carousel{position:relative;background:var(--paper) repeating-linear-gradient(transparent 0 31px,#e7dfcf 31px 32px);border:1px solid var(--sand);border-top:6px solid #c9584a;box-shadow:4px 4px 0 var(--sand);padding:28px 36px 36px 64px}
+.carousel::before{content:"";position:absolute;left:44px;top:0;bottom:0;border-left:1px solid #e3a59c}
+.carousel h1,.carousel h2{font-family:var(--serif);line-height:1.45;margin:6px 0 8px}
+.summary{color:var(--ink2);max-width:62ch}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.btn{display:inline-block;background:var(--slate);color:var(--paper);padding:7px 16px;text-decoration:none;font-family:var(--mono);font-size:13px;border:1px solid var(--slate)}
+.btn.ghost{background:transparent;color:var(--ink2);border-style:dashed;border-color:var(--ink2)}
+.carousel-ctl{position:absolute;right:16px;bottom:16px;display:flex;gap:6px}
+.carousel-ctl button{width:32px;height:32px;border:1px solid var(--slate);background:var(--paper);color:var(--slate);font-size:16px;cursor:pointer}
+.cards{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.cards a{display:flex;flex-direction:column;padding:12px 14px 12px 22px;background:#fff;border:1px solid var(--sand);border-left:6px solid var(--slate);text-decoration:none;color:var(--ink)}
+.cards a:hover{box-shadow:3px 3px 0 var(--sand)}
+.cards b{font-family:var(--serif);font-size:17px}
+.cards span{font-family:var(--mono);font-size:12px;color:var(--ink2)}
+.reading-page{background:var(--bone)}
+.reading{font-size:17px;line-height:1.95}
+.reading p{max-width:34em}
+.two-col{display:grid;grid-template-columns:230px 1fr;gap:24px;align-items:start}
+.toc{position:sticky;top:12px;background:#fff repeating-linear-gradient(transparent 0 27px,#e7dfcf 27px 28px);border:1px solid var(--sand);border-top:4px solid var(--slate);padding:12px 16px;font-size:14px;line-height:28px}
+.toc-head{margin:0 0 8px;font-weight:700}
+.toc-head a{color:var(--ink);text-decoration:none}
+.toc ol{list-style:none;padding:0;margin:0}
+.toc a{display:block;color:var(--ink2);text-decoration:none}
+.toc a[aria-current]{color:var(--ink);font-weight:700;background:rgba(201,88,74,.12)}
+.notice{margin-top:30px;padding:10px 12px;border:1px dashed var(--ink2);font-family:var(--mono);font-size:12px;color:var(--ink2)}
+.sitefoot{background:var(--deep);color:var(--sand);font-size:13px;line-height:1.8}
+.sitefoot p{max-width:1080px;margin:0 auto;padding:6px 20px}
+.sitefoot p:first-child{padding-top:22px}.sitefoot p:last-child{padding-bottom:24px}
+.sitefoot a{color:var(--bone)}
+@media (max-width:760px){.two-col{grid-template-columns:1fr}.toc{position:static}.page{padding:20px}.carousel{padding:20px 20px 52px 40px}.carousel::before{left:28px}.mainnav a{padding:7px 10px 6px}}

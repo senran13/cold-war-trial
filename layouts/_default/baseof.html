@@ -8,7 +8,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap">
-{{ with resources.Get "css/main.css" | minify | fingerprint }}<link rel="stylesheet" href="{{ .RelPermalink }}">{{ end }}
+{{ with resources.Get "css/main.css" | minify | fingerprint }}<link id="theme" rel="stylesheet" href="{{ .RelPermalink }}">{{ end }}
+{{- /* 視覺方案切換（測試用）：?v=a|b|c 或右下角按鈕；選擇記在瀏覽器 */}}
+<script>
+(function(){var v;try{v=new URLSearchParams(location.search).get('v')||localStorage.getItem('v')}catch(e){}
+if(/^[abc]$/.test(v))document.getElementById('theme').href='{{ "variants/" | relURL }}'+v+'.css';})();
+</script>
 </head>
 <body class="{{ block "bodyclass" . }}{{ end }}">
 {{ partial "header.html" . }}
@@ -16,5 +21,21 @@
 {{ block "main" . }}{{ end }}
 </main>
 {{ partial "footer.html" . }}
+<div class="vswitch" role="group" aria-label="視覺方案">
+<span>方案</span><button data-v="main">現行</button><button data-v="a">A 書卷</button><button data-v="b">B 卷宗</button><button data-v="c">C 簡潔</button>
+</div>
+<style>
+.vswitch{position:fixed;right:12px;bottom:12px;z-index:99;display:flex;gap:4px;align-items:center;padding:6px;border-radius:6px;background:#222;color:#fff;font:13px/1 sans-serif}
+.vswitch span{padding:0 6px}
+.vswitch button{font:13px sans-serif;padding:5px 9px;border:0;border-radius:4px;cursor:pointer;background:#444;color:#fff}
+.vswitch button[aria-pressed=true]{background:#e8c66a;color:#000}
+</style>
+<script>
+(function(){var cur='main';try{cur=new URLSearchParams(location.search).get('v')||localStorage.getItem('v')||'main'}catch(e){}
+document.querySelectorAll('.vswitch button').forEach(function(b){
+  b.setAttribute('aria-pressed',b.dataset.v===cur);
+  b.onclick=function(){try{localStorage.setItem('v',b.dataset.v)}catch(e){}location.href=location.pathname;};
+});})();
+</script>
 </body>
 </html>
