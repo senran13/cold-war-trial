@@ -1,0 +1,40 @@
+# 推到 main 時建置網站並部署到 GitHub Pages。Hugo 版本取自 .hugo-version，下載後以官方 checksums 驗證。
+name: Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 安裝 Hugo
+        run: |
+          ver=$(tr -d '[:space:]' < .hugo-version)
+          url=https://github.com/gohugoio/hugo/releases/download/v$ver
+          pkg=hugo_${ver}_linux-amd64.tar.gz
+          curl -fsSLO "$url/$pkg" && curl -fsSL -o sums "$url/hugo_${ver}_checksums.txt"
+          grep "  $pkg\$" sums | sha256sum -c -
+          tar -xzf "$pkg" hugo && sudo mv hugo /usr/local/bin/
+      - name: 建置
+        run: hugo --minify
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

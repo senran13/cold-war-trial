@@ -1,7 +1,7 @@
 <header class="banner">
   <img src="{{ "images/banner.jpg" | relURL }}" alt="">
   <div class="banner-text">
-    <a class="site-name" href="{{ "/" | relURL }}">{{ site.Title }}{{ if site.Params.nameIsProvisional }}<small>網站名稱待定</small>{{ end }}</a>
+    <a class="site-name" href="{{ site.Home.RelPermalink }}">{{ site.Title }}{{ if site.Params.nameIsProvisional }}<small>網站名稱待定</small>{{ end }}</a>
     <span class="site-name-en">{{ site.Params.titleEn }}</span>
   </div>
 </header>

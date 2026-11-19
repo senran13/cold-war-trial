@@ -1,4 +1,4 @@
-baseURL = "https://www.example.org/"
+baseURL = "https://senran13.github.io/cold-war-trial/"
 locale = "zh-TW"
 title = "測試網站"
 disableKinds = ["taxonomy", "term", "rss"]
