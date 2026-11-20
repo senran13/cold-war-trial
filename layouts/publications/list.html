@@ -5,7 +5,7 @@
   {{ .Content }}
   {{ with $rows }}
   <ul class="biblio">
-    {{ range sort . "年份" "desc" }}<li>{{ index . "作者" }}，{{ index . "標題" }}，{{ index . "出處" }}，{{ index . "年份" }}。</li>{{ end }}
+    {{ range sort . "年份" "desc" }}<li>{{ index . "作者" }}，{{ index . "標題" }}，{{ index . "出處" }}，{{ index . "年份" }}。{{ with index . "成員id" }}<span class="byline">　成員：{{ range $i, $id := split . ";" }}{{ with site.GetPage (printf "/members/%s" $id) }}{{ if $i }}、{{ end }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}{{ end }}</span>{{ end }}</li>{{ end }}
   </ul>
   {{ else }}<p class="placeholder">（尚無資料：出版成果建檔於 assets/data/publications.tsv）</p>{{ end }}
 </article>

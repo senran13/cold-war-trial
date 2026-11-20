@@ -62,3 +62,16 @@ img{max-width:100%}
 .sitefoot p:first-child{padding-top:28px}.sitefoot p:last-child{padding-bottom:28px}
 .sitefoot a{color:var(--bone)}
 @media (max-width:760px){.two-col{grid-template-columns:1fr;gap:20px}.toc,.two-col .page{grid-column:1;grid-row:auto}.toc{position:static;order:-1}.carousel{padding:28px 22px 60px;border-radius:8px}.mainnav a{padding:12px 9px}}
+
+/* 活動資訊欄、本章註腳、海報 */
+.meta{display:grid;grid-template-columns:auto 1fr;gap:2px 18px;margin:4px 0 12px;font-size:15px}
+.meta dt{color:var(--ink2)}
+.meta dd{margin:0}
+.footnotes{margin-top:40px;font-size:14px;line-height:1.8;color:var(--ink2)}
+.footnotes::before{content:"本章註腳";display:block;font-weight:700;color:var(--ink);padding-top:10px;border-top:1px solid var(--rule);margin-bottom:4px}
+.footnotes hr{display:none}
+.footnotes p{max-width:none;margin:0}
+.footnotes li{margin-bottom:4px}
+.footnote-ref{text-decoration:none;padding:0 1px}
+.poster{margin:16px 0 0}
+.poster img{display:block;max-width:min(100%,520px);border:1px solid var(--sand)}

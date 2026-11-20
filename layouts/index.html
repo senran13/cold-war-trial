@@ -27,7 +27,8 @@
   <div class="slide" hidden>
     <p class="kicker">最新活動</p>
     {{ with last 1 (sort $acts "日期") }}{{ range . }}
-      <h2>{{ index . "標題" }}</h2>
+      {{ $p := site.GetPage (printf "/activities/%s" (index . "id")) }}
+      <h2>{{ with $p }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ else }}{{ index . "標題" }}{{ end }}</h2>
       <p class="byline">{{ index . "日期" }}　│　{{ index . "主講" }}</p>
     {{ end }}{{ else }}
       <h2>（尚無資料）</h2>

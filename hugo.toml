@@ -27,3 +27,7 @@ weight = 4
 name = "活動"
 pageRef = "/activities"
 weight = 5
+[[menus.main]]
+name = "關於本站"
+pageRef = "/about"
+weight = 6

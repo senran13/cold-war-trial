@@ -1,12 +1,37 @@
 {{ define "main" }}
-{{ $rows := where (partial "tsv.html" "activities") "類型" "listing" }}
-<article class="page">
-  <h1>{{ .Title }}</h1>
-  {{ .Content }}
-  {{ with $rows }}
-  <ul class="plain">
-    {{ range sort . "日期" "desc" }}<li><b>{{ index . "日期" }}</b>　{{ index . "標題" }}　<span class="byline">{{ index . "主講" }}</span></li>{{ end }}
-  </ul>
-  {{ else }}<p class="placeholder">（尚無資料：活動紀錄建檔於 assets/data/activities.tsv）</p>{{ end }}
-</article>
+{{ if eq .Params.kindOf "activity" }}
+  {{/* 活動介紹頁 /activities/<id>/ */}}
+  {{ $r := .Params.row }}
+  <article class="page">
+    <p class="back"><a href="{{ .Parent.RelPermalink }}">‹ {{ .Parent.Title }}</a></p>
+    {{ with index $r "系列" }}<p class="kicker">{{ . }}{{ with index $r "場次" }}　場次 {{ . }}{{ end }}</p>{{ end }}
+    <h1>{{ .Title }}</h1>
+    <dl class="meta">
+      <dt>日期</dt><dd>{{ index $r "日期" }}</dd>
+      <dt>主講</dt><dd>{{ index $r "主講" }}</dd>
+      {{ with index $r "主持" }}<dt>主持</dt><dd>{{ . }}</dd>{{ end }}
+      {{ with index $r "地點" }}<dt>地點</dt><dd>{{ . }}</dd>{{ end }}
+    </dl>
+    {{ with index $r "摘要" }}<h2>活動介紹</h2><p>{{ . }}</p>{{ end }}
+    {{ with .Pages.ByWeight }}
+    <h2>相關頁面</h2>
+    <ul class="plain subpages">
+      {{ range . }}
+      <li>{{ if eq .Params.kindOf "poster" }}<a href="{{ .RelPermalink }}">海報</a>{{ else }}側記：<a href="{{ .RelPermalink }}">{{ .Title }}</a>　<span class="byline">{{ .Params.author }}，{{ .Date.Format "2006-01-02" }}</span>{{ end }}</li>
+      {{ end }}
+    </ul>
+    {{ end }}
+  </article>
+{{ else }}
+  {{/* 活動列表 /activities/ */}}
+  <article class="page">
+    <h1>{{ .Title }}</h1>
+    {{ .Content }}
+    {{ with where .Pages "Params.kindOf" "activity" }}
+    <ul class="plain">
+      {{ range .ByDate.Reverse }}<li><b>{{ .Date.Format "2006-01-02" }}</b>　<a href="{{ .RelPermalink }}">{{ .Title }}</a>　<span class="byline">{{ index .Params.row "主講" }}</span></li>{{ end }}
+    </ul>
+    {{ else }}<p class="placeholder">（尚無資料：活動紀錄建檔於 assets/data/activities.tsv）</p>{{ end }}
+  </article>
+{{ end }}
 {{ end }}

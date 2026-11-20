@@ -1,0 +1,14 @@
+{{ define "main" }}
+<article class="page{{ if eq .Params.kindOf "report" }} reading{{ end }}">
+  <p class="back"><a href="{{ .Parent.RelPermalink }}">‹ {{ .Parent.Title }}</a></p>
+  {{ if eq .Params.kindOf "poster" }}
+    <h1>{{ .Parent.Title }}：海報</h1>
+    <figure class="poster"><img src="{{ .Params.src | relURL }}" alt="{{ .Params.alt }}"></figure>
+  {{ else }}
+    <p class="kicker">側記</p>
+    <h1>{{ .Title }}</h1>
+    <p class="byline">{{ .Params.author }}　│　{{ .Date.Format "2006-01-02" }}</p>
+    {{ .Content }}
+  {{ end }}
+</article>
+{{ end }}

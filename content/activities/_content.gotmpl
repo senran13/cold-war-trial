@@ -1,0 +1,15 @@
+{{- /* 由 assets/data/activities.tsv 產生頁面：
+  listing 列 → /activities/<id>/（活動介紹，是一個區段，底下掛子頁）
+  有海報者 → /activities/<id>/poster/
+  report 列 → /activities/<所屬活動>/<id>/，正文取自 assets/reports/<id>.md */ -}}
+{{- $rows := partial "tsv.html" "activities" -}}
+{{- range $r := where $rows "類型" "listing" -}}
+  {{- $.AddPage (dict "kind" "section" "path" (index $r "id") "title" (index $r "標題") "dates" (dict "date" (time.AsTime (index $r "日期"))) "params" (dict "row" $r "kindOf" "activity")) -}}
+  {{- with index $r "海報" -}}
+    {{- $.AddPage (dict "path" (printf "%s/poster" (index $r "id")) "title" "海報" "params" (dict "kindOf" "poster" "src" . "alt" (index $r "海報說明")) "weight" 1) -}}
+  {{- end -}}
+{{- end -}}
+{{- range where $rows "類型" "report" -}}
+  {{- $body := "" -}}{{- with resources.Get (printf "reports/%s.md" (index . "id")) -}}{{- $body = .Content -}}{{- end -}}
+  {{- $.AddPage (dict "path" (printf "%s/%s" (index . "所屬活動") (index . "id")) "title" (index . "標題") "dates" (dict "date" (time.AsTime (index . "日期"))) "params" (dict "kindOf" "report" "author" (index . "作者")) "content" (dict "mediaType" "text/markdown" "value" $body) "weight" 2) -}}
+{{- end -}}
